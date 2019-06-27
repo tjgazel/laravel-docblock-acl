@@ -1,0 +1,49 @@
+{
+    "name": "tjgazel/laravel-docblock-acl",
+    "description": "Docblock Acl for laravel 5.5+",
+    "keywords": [
+        "docblock",
+        "acl",
+        "laravel",
+        "php",
+        "tjgazel"
+    ],
+    "homepage": "https://github.com/tjgazel/laravel-docblock-acl",
+    "license": "MIT",
+    "type": "package",
+    "authors": [
+        {
+            "name": "Talles Gazel",
+            "email": "tjgazel@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "illuminate/support": "^5.5.0",
+        "illuminate/http": "^5.5.0",
+        "illuminate/database": "^5.5.0",
+        "illuminate/routing": "^5.5.0"
+    },
+    "autoload": {
+        "files": [
+            "helpers/helpers.php"
+        ],
+        "classmap": [
+            "database/seeds"
+        ],
+        "psr-4": {
+            "TJGazel\\LaravelDocBlockAcl\\": "src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "TJGazel\\LaravelDocBlockAcl\\AclServiceProvider"
+            ],
+            "aliases": {
+                "Acl": "TJGazel\\LaravelDocBlockAcl\\Facades\\Acl"
+            }
+        }
+    }
+}
