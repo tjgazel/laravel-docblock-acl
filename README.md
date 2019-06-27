@@ -56,7 +56,7 @@ php artisan migrate
 ```
 
 ```bash
-php artisan db:seed --class=GroupSeeder
+php artisan db:seed --class=GroupsTableSeeder
 ```
 
 #### Models
