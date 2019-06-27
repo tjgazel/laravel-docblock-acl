@@ -21,7 +21,7 @@ class AddUsersForeignColumn extends Migration
             if ($driver == 'mysql') {
                 DB::statement('ALTER TABLE users ENGINE = InnoDB');
             }
-            $table->unsignedInteger('group_id')->after('id');
+            $table->unsignedInteger('group_id')->nullable()->after('id');
 
             $table->foreign('group_id')->references('id')->on('groups');
         });
