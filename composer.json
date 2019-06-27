@@ -18,7 +18,9 @@
         }
     ],
     "require": {
-        "php": ">=7.0.0",
+        "php": ">=7.0.0"
+    },
+    "require-dev": {
         "illuminate/support": "^5.5.0",
         "illuminate/http": "^5.5.0",
         "illuminate/database": "^5.5.0",
