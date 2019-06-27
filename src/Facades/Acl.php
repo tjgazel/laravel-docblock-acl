@@ -3,7 +3,7 @@
 namespace TJGazel\LaravelDocBlockAcl\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use TJGazel\LaravelDocBlocklAcl\Acl as LaravelAcl;
+use TJGazel\LaravelDocBlockAcl\Acl as LaravelAcl;
 
 class Acl extends Facade
 {
