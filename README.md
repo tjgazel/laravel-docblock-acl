@@ -1,9 +1,28 @@
 # Docblock ACL para Laravel 5.5+
 
+[English docs](README_en.md)
+
 Este pacote para laravel usa os docblocks nas ações dos controladores para definir permissões de acesso
 em todo seu sistema.
 
-[English docs](README_en.md)
+<br>
+
+-   [Instalação](#Instalação)
+
+-   [Configurações](#Configurações)
+
+    -   [Migrations e seeder](#Migrations-e-seeder)
+    -   [Models](#Models)
+    -   [Middleware](#Middleware)
+    -   [Rotas para manutenção do ACL](#Rotas-para-manutenção-do-ACL)
+    -   [Protegendo rotas com ACL](#Protegendo-rotas-com-ACL)
+    -   [Views](#Views)
+    -   [Mostrando mensagens de erro ou sucesso](#Mostrando-mensagens-de-erro-ou-sucesso)
+
+-   [Modo de uso](#Modo-de-uso)
+
+    -   [Mapeando grupo de permissões](#Mapeando-grupo-de-permissões)
+    -   [Mapeando permissões](#Mapeando-permissões)
 
 <br>
 
@@ -152,11 +171,35 @@ Route::middleware(['auth', 'acl'])->group(function() {
 
 As views ACL extendem o template `resource/views/layouts/app.blade.php` criado pelo comando `php artisan make:auth`. Você pode edita-las a seu gosto. Path `resources/views/vendor/acl`.
 
+**Idiomas:** views e mensagens de erro.
+
+-   en
+-   pt-BR
+
 `localhost:8000/acl`
 ![Screenshot 01](./screenshot01.png)
 
 `localhost:8000/1/edit`
 ![Screenshot 01](./screenshot02.png)
+
+### Mostrando mensagens de erro ou sucesso
+
+As mesagens são enviadas através de `flash message` com as respectivas chaves `acl-error` e `acl-success`. Você pode exibí-las como quiser ou poderá incluir em suas views o padrão do pacote que utiliza por padrão bootstrap 4.
+
+```php
+@if( session('acl-error') )
+    {{ session('acl-error') }}
+@endif
+@if( session('acl-success') )
+    {{ session('acl-success') }}
+@endif
+```
+
+Usando a view de mesnagem do pacote acl. Esta view mostra mensagens de erro e sucesso.
+
+```php
+@include('acl::_msg')
+```
 
 <br>
 
@@ -179,7 +222,7 @@ class PageController extends Controller
 }
 ```
 
-### Mapeando nome das permissões
+### Mapeando permissões
 
 Nas ações (methods) do controller utilize a tag `@permissionName('Nome da permissão')`
 
