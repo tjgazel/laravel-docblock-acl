@@ -7,7 +7,7 @@ em todo seu sistema.
 
 <br>
 
-### Instalação
+## Instalação
 
 Use o composer
 
@@ -31,11 +31,11 @@ Este comando irá fazer as seguintes alterações:
 -   Adicionar as views do ACL em `resources/views/vendor/acl`.
 -   Adicionar os aquivos de tradução em `resources/lang/vendor/acl/en` e `resources/lang/vendor/acl/pt-BR`.
 
-Como alternativa você pode publicar cada etapa de forma individual usando o comando `php artisan vendor:publish` e selecionando a respectiva opção na lista.
+Como alternativa você pode publicar cada etapa de forma individual usando o comando `php artisan publish` e selecionando a respectiva opção na lista.
 
 <br>
 
-### Configurações
+## Configurações
 
 Abra o arquivo `config/acl.php` e configure o namespace correto para sua model `User`.
 
@@ -49,7 +49,11 @@ return [
 ];
 ```
 
-#### Migrations e Groups seeder
+### Migrations e seeder
+
+Será criado as tabelas no banco de dados e adicionado uma chave estrangeira (group_id) na tabela Users conforme o esquema da figura abaixo.
+
+![Screenshot 01](./screenshot03.png)
 
 ```bash
 php artisan migrate
@@ -59,7 +63,9 @@ php artisan migrate
 php artisan db:seed --class=GroupsTableSeeder
 ```
 
-#### Models
+> Se a sua tabela Users já tiver algum registro de usuário, deverá associar um grupo para ele.
+
+### Models
 
 No model `User`, implemente a interface `UserAclContract`. Adicione também a trait `UserAcltrait`.
 
@@ -74,7 +80,7 @@ class User extends Authenticatable implements UserAclContract
 }
 ```
 
-#### Middleware
+### Middleware
 
 Abra o arquivo `app/Http/Kernel.php` e adicione o middleware ACL.
 
@@ -85,9 +91,9 @@ protected $routeMiddleware = [
 ];
 ```
 
-#### Rotas para manutenção do ACL
+### Rotas para manutenção do ACL
 
-Adicione em seu arquivo de rotas Api ou Web a função abaixo. As rotas irão responder de acordo com o tipo de solicitação. Lembre-se que ACL funciona em conjunto com o login. Assumimos então que você já tenha instalado o sistema padrão de logim do laravel usado `php artisan make:auth`
+Adicione em seu arquivo de rotas Api ou Web a função abaixo. As rotas irão responder de acordo com o tipo de solicitação. Lembre-se que ACL funciona em conjunto com o login. Assumimos então que você já tenha instalado o sistema padrão de login do laravel usado `php artisan make:auth`
 
 ```php
 // web.php
@@ -106,6 +112,17 @@ Acl::routes([
 ]);
 ```
 
+> **Importante:**
+> Como é obvio, no primeiro momento não exite uma atribuição das permissões para determinado grupo. A configuração das rotas `Acl::routes()` , aplica o middleware acl por padrão conforme mostrado acima, sendo assim, será impossível acessá-las sem desativar monetanteamente esse middleware. Para isso passe o parâmetro opcional conforme mostrado abaixo.
+
+```php
+Acl::routes([
+    'middleware' => []
+]);
+```
+
+Não esqueça de voltar o padrão após atribuição das permissões aos grupos essenciais.
+
 **Lista das rotas ACL** <br>
 Podem ser personalizadas com prefix, name e middleware conforme mostrado acima.
 
@@ -118,10 +135,10 @@ Podem ser personalizadas com prefix, name e middleware conforme mostrado acima.
 | PUT    | /acl/{group_id}      | acl.update  | \TJGazel\LaravelDocBlockAcl\Http\Controllers\AclController@update  | auth,acl   |
 | DELETE | /acl/{group_id}      | acl.destroy | \TJGazel\LaravelDocBlockAcl\Http\Controllers\AclController@destroy | auth,acl   |
 
-#### Protegendo rotas com ACL
+### Protegendo rotas com ACL
 
 > **Observação:**
-> Antes de proteger suas rotas, faça o mapeamentos dos grupos e permissões nos controllers e através da rota (por padrão) `/acl` , atribua as permissões aos tipos de usuários.
+> Antes de proteger suas rotas, faça o mapeamentos dos grupos e permissões nos controllers e através da rota (por padrão) `/acl` , atribua as permissões aos tipos de usuários. Veja na sessão [Modo de uso](#Modo-de-uso)
 
 Basta agrupar suas rotas com o middleware ACL.
 
@@ -131,18 +148,24 @@ Route::middleware(['auth', 'acl'])->group(function() {
 });
 ```
 
-#### Views
+### Views
 
 As views ACL extendem o template criado pelo comando `php artisan make:auth`. Você pode edita-las a seu gosto. Elas se encomtram em `resources/views/vendor/acl`.
 
+`http://localhost:8000/acl`
+![Screenshot 01](./screenshot01.png)
+
+`http://localhost:8000/1/edit`
+![Screenshot 01](./screenshot02.png)
+
 <br>
 
-### Modo de uso
+## Modo de uso
 
 > **Observação:**
 > O ACL funciona em conjunto com autenticação, portando você só deve mapear as ações dos controladores que estiverem protegidas pelos middlewares `auth`, `auth:api` ou outro personalizado.
 
-#### Mapeando grupo de permissões
+### Mapeando grupo de permissões
 
 Em seus controllers utilize docblocs com a tag `@permissionResource('Nome do grupo')`.
 
@@ -156,7 +179,7 @@ class PageController extends Controller
 }
 ```
 
-#### Mapeando nome das permissões
+### Mapeando nome das permissões
 
 Nas ações (methods) do controller utilize a tag `@permissionName('Nome da permissão')`
 
