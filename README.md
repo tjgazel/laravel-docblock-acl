@@ -150,12 +150,12 @@ Route::middleware(['auth', 'acl'])->group(function() {
 
 ### Views
 
-As views ACL extendem o template criado pelo comando `php artisan make:auth`. Você pode edita-las a seu gosto. Elas se encomtram em `resources/views/vendor/acl`.
+As views ACL extendem o template `resource/views/layouts/app.blade.php` criado pelo comando `php artisan make:auth`. Você pode edita-las a seu gosto. Path `resources/views/vendor/acl`.
 
-`http://localhost:8000/acl`
+`localhost:8000/acl`
 ![Screenshot 01](./screenshot01.png)
 
-`http://localhost:8000/1/edit`
+`localhost:8000/1/edit`
 ![Screenshot 01](./screenshot02.png)
 
 <br>
@@ -163,7 +163,7 @@ As views ACL extendem o template criado pelo comando `php artisan make:auth`. Vo
 ## Modo de uso
 
 > **Observação:**
-> O ACL funciona em conjunto com autenticação, portando você só deve mapear as ações dos controladores que estiverem protegidas pelos middlewares `auth`, `auth:api` ou outro personalizado.
+> ACL funciona em conjunto com autenticação, portando recomenda-se mapear apenas as ações dos controladores que estiverem protegidas pelos middlewares `auth`, `auth:api` ou outro personalizado.
 
 ### Mapeando grupo de permissões
 
