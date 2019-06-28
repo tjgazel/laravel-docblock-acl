@@ -111,7 +111,7 @@ class AclController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return back()->with('error', $e->getMessage());
+            return back()->with('acl-error', $e->getMessage());
         }
     }
 
@@ -217,7 +217,7 @@ class AclController extends Controller
             }
 
             $group->permissions()->detach();
-            
+
             $group->delete();
 
             DB::commit();
