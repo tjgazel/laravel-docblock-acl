@@ -188,22 +188,24 @@ As views ACL extendem o template `resource/views/layouts/app.blade.php` criado p
 
 ### Mostrando mensagens de erro ou sucesso
 
-As mesagens são enviadas através de `flash message` com as respectivas chaves `acl-error` e `acl-success`. Você pode exibí-las como quiser ou poderá incluir em suas views o padrão do pacote que utiliza por padrão bootstrap 4.
+As mesagens são enviadas através de `flash message` com as respectivas chaves de acordo com o arquivo `config/acl.php`. Você pode exibi-las usando seu próprio modelo.
 
 ```php
-@if( session('acl-error') )
-    {{ session('acl-error') }}
+@if( session(config('acl.session_error')) )
+    {{ session(config('acl.session_error')) }}
 @endif
-@if( session('acl-success') )
-    {{ session('acl-success') }}
+@if( session(config('acl.session_success')) )
+    {{ session(config('acl.session_success')) }}
 @endif
 ```
 
-Usando a view de mesnagem do pacote acl. Esta view mostra mensagens de erro e sucesso.
+O pacote também tráz o modelo boostrap 4 e já faz todo este trabalho. Inclua o arquivo no seu modelo de layout.
 
 ```php
 @include('acl::_msg')
 ```
+
+> Como alternativa, esse pacote dá suporte ao [tjgazel/laravel-toastr](https://github.com/tjgazel/laravel-toastr) que traz uma interface mais amigável na exibição de flash message. Se você ja usa [tjgazel/laravel-toastr](https://github.com/tjgazel/laravel-toastr) não precisa fazer nenhuma configuração extra, já está tudo pronto.
 
 <br>
 
