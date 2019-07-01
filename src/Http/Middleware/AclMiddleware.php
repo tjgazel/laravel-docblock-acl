@@ -41,6 +41,10 @@ class AclMiddleware
                         return response()->json(__('acl::msg.forbidden'), 403);
                     }
 
+                    if (class_exists('\\TJGazel\\Toastr\\ToastrServiceProvider')) {
+                        toastr()->error(__('acl::msg.forbidden'));
+                    }
+
                     if ($request->url() != session()->previousUrl()) {
 
                         return back()->with(Config::get('acl.session_error'), __('acl::msg.forbidden'));

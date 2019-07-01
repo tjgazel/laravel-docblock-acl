@@ -106,10 +106,22 @@ class AclController extends Controller
                 return response()->json([], 201);
             }
 
+            if (class_exists('\\TJGazel\\Toastr\\ToastrServiceProvider')) {
+                toastr()->success(__('acl::view.created'));
+            }
+
             return redirect(route(aclPrefixRoutName() . 'index'), 201)
                 ->with(Config::get('acl.session_success'), __('acl::view.created'));
         } catch (\Exception $e) {
             DB::rollBack();
+
+            if ($request->ajax()) {
+                return response()->json($e->getMessage(), 409);
+            }
+
+            if (class_exists('\\TJGazel\\Toastr\\ToastrServiceProvider')) {
+                toastr()->error($e->getMessage());
+            }
 
             return back()->with(Config::get('acl.session_error'), $e->getMessage());
         }
@@ -180,10 +192,22 @@ class AclController extends Controller
                 return response()->json([], 201);
             }
 
+            if (class_exists('\\TJGazel\\Toastr\\ToastrServiceProvider')) {
+                toastr()->success(__('acl::view.updated'));
+            }
+
             return redirect(route(aclPrefixRoutName() . 'index'), 201)
                 ->with(Config::get('acl.session_success'), __('acl::view.updated'));
         } catch (\Exception $e) {
             DB::rollBack();
+
+            if ($request->ajax()) {
+                return response()->json($e->getMessage(), 409);
+            }
+
+            if (class_exists('\\TJGazel\\Toastr\\ToastrServiceProvider')) {
+                toastr()->error($e->getMessage());
+            }
 
             return back()->with(Config::get('acl.session_error'), $e->getMessage());
         }
@@ -226,10 +250,22 @@ class AclController extends Controller
                 return response()->json([], 201);
             }
 
+            if (class_exists('\\TJGazel\\Toastr\\ToastrServiceProvider')) {
+                toastr()->success(__('acl::view.deleted'));
+            }
+
             return redirect(route(aclPrefixRoutName() . 'index'), 201)
                 ->with(Config::get('acl.session_success'), __('acl::view.deleted'));
         } catch (\Exception $e) {
             DB::rollBack();
+
+            if ($request->ajax()) {
+                return response()->json($e->getMessage(), 409);
+            }
+
+            if (class_exists('\\TJGazel\\Toastr\\ToastrServiceProvider')) {
+                toastr()->error($e->getMessage());
+            }
 
             return back()->with(Config::get('acl.session_error'), $e->getMessage());
         }
