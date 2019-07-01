@@ -205,7 +205,7 @@ O pacote também tráz o modelo boostrap 4 e já faz todo este trabalho. Inclua 
 @include('acl::_msg')
 ```
 
-> Como alternativa, esse pacote dá suporte ao [tjgazel/laravel-toastr](https://github.com/tjgazel/laravel-toastr) que traz uma interface mais amigável na exibição de flash message. Se você ja usa [tjgazel/laravel-toastr](https://github.com/tjgazel/laravel-toastr) não precisa fazer nenhuma configuração extra, já está tudo pronto.
+> Como alternativa, esse pacote dá suporte ao [tjgazel/laravel-toastr](https://github.com/tjgazel/laravel-toastr) que traz uma interface mais amigável na exibição de flash message. Se você já usa [tjgazel/laravel-toastr](https://github.com/tjgazel/laravel-toastr) não precisa fazer nenhuma configuração extra, já está tudo pronto.
 
 <br>
 
