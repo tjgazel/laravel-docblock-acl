@@ -7,22 +7,22 @@ em todo seu sistema.
 
 <br>
 
-- [Instalação](#Instalação)
+-   [Instalação](#Instalação)
 
-- [Configurações](#Configurações)
+-   [Configurações](#Configurações)
 
-  - [Migrations e seeder](#Migrations-e-seeder)
-  - [Models](#Models)
-  - [Middleware](#Middleware)
-  - [Rotas para manutenção do ACL](#Rotas-para-manutenção-do-ACL)
-  - [Protegendo rotas com ACL](#Protegendo-rotas-com-ACL)
-  - [Views](#Views)
-  - [Mostrando mensagens de erro ou sucesso](#Mostrando-mensagens-de-erro-ou-sucesso)
+    -   [Migrations e seeder](#Migrations-e-seeder)
+    -   [Models](#Models)
+    -   [Middleware](#Middleware)
+    -   [Rotas para manutenção do ACL](#Rotas-para-manutenção-do-ACL)
+    -   [Protegendo rotas com ACL](#Protegendo-rotas-com-ACL)
+    -   [Views](#Views)
+    -   [Mostrando mensagens de erro ou sucesso](#Mostrando-mensagens-de-erro-ou-sucesso)
 
-- [Modo de uso](#Modo-de-uso)
+-   [Modo de uso](#Modo-de-uso)
 
-  - [Mapeando grupo de permissões](#Mapeando-grupo-de-permissões)
-  - [Mapeando permissões](#Mapeando-permissões)
+    -   [Mapeando grupo de permissões](#Mapeando-grupo-de-permissões)
+    -   [Mapeando permissões](#Mapeando-permissões)
 
 <br>
 
@@ -44,13 +44,13 @@ php artisan vendor:publish --provider="TJGazel\LaravelDocBlockAcl\AclServiceProv
 
 Este comando irá fazer as seguintes alterações:
 
-- Adicionar o arquivo de configuração `acl.php` no diretório `config`.
-- Adicionar as migrações para o ACL.
-- Adicionar um arquivo de seeder para a tabela groups.
-- Adicionar as views do ACL em `resources/views/vendor/acl`.
-- Adicionar os aquivos de tradução em `resources/lang/vendor/acl/en` e `resources/lang/vendor/acl/pt-BR`.
+-   Adicionar o arquivo de configuração `acl.php` no diretório `config`.
+-   Adicionar as migrações para o ACL.
+-   Adicionar um arquivo de seeder para a tabela groups.
+-   Adicionar as views do ACL em `resources/views/vendor/acl`.
+-   Adicionar os aquivos de tradução em `resources/lang/vendor/acl/en` e `resources/lang/vendor/acl/pt-BR`.
 
-Como alternativa você pode publicar cada etapa de forma individual usando o comando `php artisan publish` e selecionando a respectiva opção na lista.
+Como alternativa você pode publicar cada etapa de forma individual usando o comando `php artisan vendor:publish` e selecionando a respectiva opção na lista.
 
 <br>
 
@@ -64,7 +64,11 @@ return [
         'user' => '\App\User',
         'group' => '\TJGazel\LaravelDocBlockAcl\Models\Group',
         'permission' => '\TJGazel\LaravelDocBlockAcl\Models\Permission'
-    ]
+    ],
+
+    'session_error'   => 'acl_error',
+
+    'session_success' => 'acl_success',
 ];
 ```
 
@@ -173,8 +177,8 @@ As views ACL extendem o template `resource/views/layouts/app.blade.php` criado p
 
 **Idiomas:** views e mensagens de erro.
 
-- en
-- pt-BR
+-   en
+-   pt-BR
 
 `localhost:8000/acl`
 ![Screenshot 01](./screenshot01.png)

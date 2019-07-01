@@ -3,9 +3,9 @@
 namespace TJGazel\LaravelDocBlockAcl\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use TJGazel\LaravelDocBlockAcl\Services\AclService;
-use Illuminate\Support\Facades\Config;
 
 /** @permissionResource('ACL') */
 class AclController extends Controller
@@ -65,9 +65,9 @@ class AclController extends Controller
         }
 
         $form = [
-            'type' => 'create',
+            'type'   => 'create',
             'action' => route(aclPrefixRoutName() . 'store'),
-            'method' => 'POST'
+            'method' => 'POST',
         ];
 
         return view('acl::form', compact(['form', 'resourcesPermissions']));
@@ -83,8 +83,8 @@ class AclController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|max:255',
-            'description' => 'max:255'
+            'name'        => 'required|max:255',
+            'description' => 'max:255',
         ]);
 
         $permissions = $request->get('permissions');
@@ -107,11 +107,11 @@ class AclController extends Controller
             }
 
             return redirect(route(aclPrefixRoutName() . 'index'), 201)
-                ->with('acl-success', __('acl::view.created'));
+                ->with(Config::get('acl.session_success'), __('acl::view.created'));
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return back()->with('acl-error', $e->getMessage());
+            return back()->with(Config::get('acl.session_error'), $e->getMessage());
         }
     }
 
@@ -125,7 +125,7 @@ class AclController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $groupModel = Config::get('acl.model.group');
+        $groupModel      = Config::get('acl.model.group');
         $permissionModel = Config::get('acl.model.permission');
 
         $group = $groupModel::findOrFail($id)->load('permissions');
@@ -140,9 +140,9 @@ class AclController extends Controller
         }
 
         $form = [
-            'type' => 'edit',
+            'type'   => 'edit',
             'action' => route(aclPrefixRoutName() . 'update', ['id' => $group->id]),
-            'method' => 'PUT'
+            'method' => 'PUT',
         ];
 
         return view('acl::form', compact(['form', 'group', 'resourcesPermissions']));
@@ -159,8 +159,8 @@ class AclController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|max:255',
-            'description' => 'max:255'
+            'name'        => 'required|max:255',
+            'description' => 'max:255',
         ]);
 
         try {
@@ -181,11 +181,11 @@ class AclController extends Controller
             }
 
             return redirect(route(aclPrefixRoutName() . 'index'), 201)
-                ->with('acl-success', __('acl::view.updated'));
+                ->with(Config::get('acl.session_success'), __('acl::view.updated'));
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return back()->with('acl-error', $e->getMessage());
+            return back()->with(Config::get('acl.session_error'), $e->getMessage());
         }
     }
 
@@ -227,11 +227,11 @@ class AclController extends Controller
             }
 
             return redirect(route(aclPrefixRoutName() . 'index'), 201)
-                ->with('acl-success', __('acl::view.deleted'));
+                ->with(Config::get('acl.session_success'), __('acl::view.deleted'));
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return back()->with('acl-error', $e->getMessage());
+            return back()->with(Config::get('acl.session_error'), $e->getMessage());
         }
     }
 }

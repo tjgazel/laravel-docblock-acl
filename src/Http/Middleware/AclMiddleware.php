@@ -3,6 +3,7 @@
 namespace TJGazel\LaravelDocBlockAcl\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use TJGazel\LaravelDocBlockAcl\Facades\Acl;
 
@@ -42,10 +43,10 @@ class AclMiddleware
 
                     if ($request->url() != session()->previousUrl()) {
 
-                        return back()->with('acl-error', __('acl::msg.forbidden'));
+                        return back()->with(Config::get('acl.session_error'), __('acl::msg.forbidden'));
                     } else {
 
-                        return redirect('/')->with('acl-error', __('acl::msg.forbidden'));
+                        return redirect('/')->with(Config::get('acl.session_error'), __('acl::msg.forbidden'));
                     }
                 }
             }
