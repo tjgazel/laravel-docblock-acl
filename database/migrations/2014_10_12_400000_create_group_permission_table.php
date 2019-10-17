@@ -25,6 +25,8 @@ class CreateGroupPermissionTable extends Migration
 
             $table->foreign('group_id')->references('id')->on('groups');
             $table->foreign('permission_id')->references('id')->on('permissions');
+			
+			$table->primary(['group_id', 'permission_id'], 'group_permission_primary');
         });
     }
 
