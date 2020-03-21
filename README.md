@@ -1,4 +1,4 @@
-# Docblock ACL para Laravel 5.5+
+# Docblock ACL para Laravel 5.5+, 6 e 7
 
 [English docs](README_en.md)
 

@@ -1,4 +1,4 @@
-# Docblock ACL for Laravel 5.5+
+# Docblock ACL for Laravel 5.5+, 6 & 7
 
 Work in progress.
 
