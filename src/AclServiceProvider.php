@@ -28,7 +28,7 @@ class AclServiceProvider extends ServiceProvider
 
         $this->publishes([__DIR__ . '/../database/migrations/' => database_path('migrations')], 'acl-migrations');
 
-        $this->publishes([__DIR__ . '/../database/seeds/' => database_path('seeds')], 'acl-seeds');
+        $this->publishes([__DIR__ . '/../database/seeds/GroupsTableSeeder.php' => database_path('seeds/CustomGroupsTableSeeder.php')], 'acl-groups-seeder');
 
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'acl');
 
