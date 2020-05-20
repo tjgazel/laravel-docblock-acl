@@ -103,7 +103,8 @@ class AclController extends Controller
             DB::commit();
 
             if ($request->ajax()) {
-                return response()->json([], 201);
+                $group->load('permissions');
+                return response()->json($group, 201);
             }
 
             if (class_exists('\\TJGazel\\Toastr\\ToastrServiceProvider')) {
