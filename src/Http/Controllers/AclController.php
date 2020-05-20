@@ -61,7 +61,7 @@ class AclController extends Controller
             ->groupBy('resource');
 
         if ($request->ajax()) {
-            return response()->json([$resourcesPermissions]);
+            return response()->json($resourcesPermission);
         }
 
         $form = [
