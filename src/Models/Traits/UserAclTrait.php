@@ -1,10 +1,10 @@
 <?php
 
-namespace TJGazel\LaravelDocBlockAcl\Models\traits;
+namespace TJGazel\LaravelDocBlockAcl\Models\Traits;
 
 use Illuminate\Support\Facades\Config;
 
-trait UserAcltrait
+trait UserAclTrait
 {
     public function group()
     {
