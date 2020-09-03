@@ -2,7 +2,10 @@
 
 namespace TJGazel\LaravelDocBlockAcl;
 
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
 class AclServiceProvider extends ServiceProvider
 {
@@ -36,7 +39,9 @@ class AclServiceProvider extends ServiceProvider
 
         $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'acl');
 
-        $this->publishes([__DIR__ . '/../resources/lang' => resource_path('lang/vendor/acl')], 'acl-translations');
+		$this->publishes([__DIR__ . '/../resources/lang' => resource_path('lang/vendor/acl')], 'acl-translations');
+
+		$this->regiterGates();
     }
 
     /**
@@ -59,5 +64,23 @@ class AclServiceProvider extends ServiceProvider
     public function provides()
     {
         return [Acl::class];
+	}
+
+	/**
+     * @return void
+     */
+    private function regiterGates()
+    {
+        $permissionModel = Config::get('acl.model.permission');
+
+        $permissions = $permissionModel::all();
+
+        foreach ($permissions as $permission) {
+            $name = Str::slug($permission->resource, '_') . '.' . Str::slug($permission->name, '_');
+
+            Gate::define($name, function($user) use ($permission) {
+                return $user->hasAclPermission($permission);
+            });
+        }
     }
 }
