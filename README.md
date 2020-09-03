@@ -49,7 +49,7 @@ Este comando irá fazer as seguintes alterações:
 -   Adicionar as migrações para o ACL.
 -   Adicionar um arquivo de seeder para a tabela groups.
 -   Adicionar as views do ACL em `resources/views/vendor/acl`.
--   Adicionar os aquivos de tradução em `resources/lang/vendor/acl/en` e `resources/lang/vendor/acl/pt-BR`.
+-   Adicionar os aquivos de tradução em `resources/lang/vendor/acl/en` e `resources/lang/vendor/acl/pt_BR`.
 
 Como alternativa você pode publicar cada etapa de forma individual usando o comando `php artisan vendor:publish` e selecionando a respectiva opção na lista.
 
