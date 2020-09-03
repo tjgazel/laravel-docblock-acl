@@ -176,7 +176,7 @@ As views ACL extendem o template `resource/views/layouts/app.blade.php` criado p
 **Idiomas:** views e mensagens de erro.
 
 -   en
--   pt-BR
+-   pt_BR
 
 `localhost:8000/acl`
 ![Screenshot 01](./screenshot01.png)
@@ -293,7 +293,7 @@ Seguindo o exemplo do mapeamento do controller na sessão acima teremos as segui
 
 > *OBS:* Para normalizar os nomes, foi utilizado a facade `Str::slug()`. 
 
-Segue alguns exemplos de uso.
+Segue alguns exemplos de uso:
 
 <br/><br/>
 
@@ -340,3 +340,7 @@ Route::put('/post/{post}', function (Post $post) {
     // The current user may update the post...
 })->middleware('can:post.update'); // can:nome_do_recurso.nome_da_permissao
 ```
+
+<br/><br/>
+
+[Veja todos os exemplos de uso na sessão **Authorization** da documentação oficial do Laravel](https://laravel.com/docs/7.x/authorization)
