@@ -71,16 +71,20 @@ class AclServiceProvider extends ServiceProvider
      */
     private function regiterGates()
     {
-        $permissionModel = Config::get('acl.model.permission');
+		try {
+			$permissionModel = Config::get('acl.model.permission');
 
-        $permissions = $permissionModel::all();
+			$permissions = $permissionModel::all();
 
-        foreach ($permissions as $permission) {
-            $name = Str::slug($permission->resource, '_') . '.' . Str::slug($permission->name, '_');
+			foreach ($permissions as $permission) {
+				$name = Str::slug($permission->resource, '_') . '.' . Str::slug($permission->name, '_');
 
-            Gate::define($name, function($user) use ($permission) {
-                return $user->hasAclPermission($permission);
-            });
-        }
+				Gate::define($name, function($user) use ($permission) {
+					return $user->hasAclPermission($permission);
+				});
+			}
+		} catch (\Exception $e) {
+
+		}
     }
 }
