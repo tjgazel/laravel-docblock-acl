@@ -291,7 +291,7 @@ Seguindo o exemplo do mapeamento do controller na sessão acima teremos as segui
 - `acl.edit_form`
 - `acl.update`
 
-> *OBS:* Para normalizar os nomes, foi utilizado a facade `Str::slug()`. 
+> *OBS:* Para normalizar os nomes, foi utilizado a facade `Str::slug('', '_')`. 
 
 Segue alguns exemplos de uso:
 
