@@ -4,6 +4,7 @@ namespace TJGazel\LaravelDocBlockAcl;
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 
@@ -84,7 +85,7 @@ class AclServiceProvider extends ServiceProvider
 				});
 			}
 		} catch (\Exception $e) {
-
+			Log::error($e->getMessage());
 		}
     }
 }
