@@ -25,21 +25,21 @@ class AclServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'acl');
 
-        $this->publishes([__DIR__ . '/../config/config.php' => config_path('acl.php')], 'acl-config');
+        $this->publishes([__DIR__ . '/../config/config.php' => config_path('acl.php')], 'acl:config');
 
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
-        $this->publishes([__DIR__ . '/../database/migrations/' => database_path('migrations')], 'acl-migrations');
+        $this->publishes([__DIR__ . '/../database/migrations/' => database_path('migrations')], 'acl:migrations');
 
-        $this->publishes([__DIR__ . '/../database/seeds/GroupsTableSeeder.php' => database_path('seeds/CustomGroupsTableSeeder.php')], 'acl-groups-seeder');
+        $this->publishes([__DIR__ . '/../database/seeds/GroupsTableSeeder.php' => database_path('seeds/CustomGroupsTableSeeder.php')], 'acl:groups-seeder');
 
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'acl');
 
-        $this->publishes([__DIR__ . '/../resources/views' => resource_path('views/vendor/acl')], 'acl-views');
+        $this->publishes([__DIR__ . '/../resources/views' => resource_path('views/vendor/acl')], 'acl:views');
 
         $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'acl');
 
-		$this->publishes([__DIR__ . '/../resources/lang' => resource_path('lang/vendor/acl')], 'acl-translations');
+		$this->publishes([__DIR__ . '/../resources/lang' => resource_path('lang/vendor/acl')], 'acl:translations');
 
 		$this->regiterGates();
     }
