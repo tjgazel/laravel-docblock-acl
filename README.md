@@ -297,7 +297,7 @@ Segue alguns exemplos de uso:
 
 <br/><br/>
 
-Vemos aqui um exemplo em que o usuário deve pertencer a um grupo que contém uma permissão expecífica (`acl.list_all_groups`) para visualizar o link `Permissões do sistema`. Utilizando a diretiva `@can` do Blade podemos facilmente fazer isso.
+Veja um exemplo em que o usuário deve pertencer a um grupo que contém uma permissão expecífica (`acl.list_all_groups`) para visualizar o link `Permissões do sistema`. Utilizando a diretiva `@can` do Blade podemos facilmente fazer isso.
 ```html
 <nav class="mt-2">
     <ul class="nav nav-pills nav-sidebar flex-column nav-flat" data-widget="treeview" role="menu" data-accordion="false">
