@@ -33,7 +33,7 @@ originalmente para Zend-framework 2 por Thales F. Santos e Giovanni Camargo.
     -  [**Views**](#Views)
     -  [**Mostrando mensagens de erro ou sucesso**](#Mostrando-mensagens-de-erro-ou-sucesso)
 
--   [**Exemplo de uso](#Exemplo-de-uso)
+-   [**Exemplo de uso**](#Exemplo-de-uso)
 
     -   [**Mapeando recursos**](#Mapeando-recursos)
     -   [**Mapeando permissões**](#Mapeando-permissoes)
