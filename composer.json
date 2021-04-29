@@ -31,9 +31,6 @@
         "files": [
             "helpers/helpers.php"
         ],
-        "classmap": [
-            "database/seeds"
-        ],
         "psr-4": {
             "TJGazel\\LaravelDocBlockAcl\\": "src/"
         }
