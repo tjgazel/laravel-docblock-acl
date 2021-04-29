@@ -1,29 +1,44 @@
-# Docblock ACL para Laravel 5.5+, 6 e 7
+# Docblock ACL para Laravel
+
+[![Latest Stable Version](https://poser.pugx.org/tjgazel/laravel-docblock-acl/v/stable)](https://packagist.org/packages/tjgazel/laravel-docblock-acl)
+[![License](https://poser.pugx.org/tjgazel/laravel-docblock-acl/license)](https://github.com/tjgazel/laravel-docblock-acl/blob/master/LICENSE)
+[![Total Downloads](https://poser.pugx.org/tjgazel/laravel-docblock-acl/downloads)](https://packagist.org/packages/tjgazel/laravel-docblock-acl)
 
 [English docs](README_en.md)
 
-Este pacote para laravel usa os docblocks nas ações dos controladores para definir permissões de acesso
-em todo seu sistema.
+Este pacote usa o docblock das ações dos controladores para definir permissões de acesso ao seu sistema. Foi idealizado e desenvolvido 
+originalmente para Zend-framework 2 por Thales F. Santos e Giovanni Camargo.
+
+**Compatível com Livewire Full-Page Components.**
+
+<br/>
+
+| Releases | Laravel | Docs | Obs. |
+| ------- | -------------- | -----| ---- |
+| v1.* | 5.5+, 6.* e 7.* | [Ler doc](https://github.com/tjgazel/laravel-docblock-acl/tree/masterV1) | Suporta apenas um grupo de permissões por usuário. |
+| v2.* | 6.* e 7.* | [Ler doc](https://github.com/tjgazel/laravel-docblock-acl/tree/masterV2) | Suporta vários grupos de permissões por usuário. |
+| v3.* | 8.* | [Ler doc](https://github.com/tjgazel/laravel-docblock-acl/tree/master) | Suporta vários grupos de permissões por usuário. |
 
 <br>
 
--   [Instalação](#Instalação)
+-   [**Instalação**](#Instalação)
 
--   [Configurações](#Configurações)
+-   [**Configurações**](#Configurações)
 
-    -  [Migrations e seeder](#Migrations-e-seeder)
-    -  [Models](#Models)
-    -  [Middleware](#Middleware)
-    -  [Rotas para manutenção do ACL](#Rotas-para-manutenção-do-ACL)
-    -  [Views](#Views)
-    -  [Mostrando mensagens de erro ou sucesso](#Mostrando-mensagens-de-erro-ou-sucesso)
+    -  [**Migrations e seeder**](#Migrations-e-seeder)
+    -  [**Models**](#Models)
+    -  [**Middleware**](#Middleware)
+    -  [**Rotas para manutenção do ACL**](#Rotas-para-manutenção-do-ACL)
+    -  [**Views**](#Views)
+    -  [**Mostrando mensagens de erro ou sucesso**](#Mostrando-mensagens-de-erro-ou-sucesso)
 
--   [Exemplo de uso](#Exemplo-de-uso)
+-   [**Exemplo de uso**](#Exemplo-de-uso)
 
-    -   [Mapeando recursos](#Mapeando-recursos)
-    -   [Mapeando permissões](#Mapeando-permissões)
-    -   [Protegendo rotas com ACL](#Protegendo-rotas-com-ACL)
-    -   [Utilizando Gate, Can, Middleware e Blade ](#Utilizando-Gate,-Can,-Middleware-e-Blade)
+    -   [**Mapeando recursos**](#Mapeando-recursos)
+    -   [**Mapeando permissões**](#Mapeando-permissoes)
+    -   [**Livewire Full-Page Components**](#Livewire-Full-Page-Components)
+    -   [**Protegendo rotas com ACL**](#Protegendo-rotas-com-ACL)
+    -   [**Utilizando Gate, Can, Middleware e Blade**](#Utilizando-Gate,-Can,-Middleware-e-Blade)
 
 <br/><br/>
 
@@ -32,7 +47,7 @@ em todo seu sistema.
 Use o composer
 
 ```bash
-composer require tjgazel/laravel-docblock-acl
+composer require tjgazel/laravel-docblock-acl "^1.5"
 ```
 
 <br>
@@ -260,6 +275,39 @@ Nas ações (methods) do controller utilize a tag `@permissionName('Nome da perm
 > Varios controllers podem usar o mesmo nome de recurso `**@permissionResource('ACL')**`. Isto fará com que as permissões de todos os controladores que contenham o mesmo nome de recurso, sejam mostradas na view de forma agrupada, mas tenha atenção em colisão de nomes nas tag das permissões `**@permissionName('Nome da permissão')**`.
 
 Após esse mapeamento, acesse a rota `**localhost:8000/acl**` para que o sistema registre de fato as permissões no banco de dados. Quando houver qualquer alteração esse procedimento deve ser repetido para registrar as alterações.
+
+<br/><br/>
+
+### Livewire Full-Page Components
+Ao utilizar Livewire Full-Page Components só é possível mapear o método render, então leve em consideração
+que cada componente deve ter uma ação bem específica para manter a semantica do ACL.
+
+```php
+Route::get('posts/create', 'Livewire\Posts\PostCreate');
+```
+
+```php
+namespace App\Http\Livewire\Posts;
+
+use Livewire\Component;
+
+/** @permissionResource('Posts') */
+class PostCreate extends Component
+{
+    /**
+     * @permissionName('Create')
+     */
+    public function render()
+    {
+        return view('livewire.posts.create')->layout('layouts.app');
+    }
+    
+    public function onSubmit()
+    {
+        //...
+    }
+}
+```
 
 <br/><br/>
 
