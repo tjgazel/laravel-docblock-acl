@@ -15,31 +15,31 @@ originalmente para Zend-framework 2 por Thales F. Santos e Giovanni Camargo.
 
 | Releases | Laravel | Docs | Obs. |
 | ------- | -------------- | -----| ---- |
-| v1.* | 5.5+, 6.* e 7.* | [Ver](https://github.com/tjgazel/laravel-docblock-acl/tree/masterV1) | Suporta apenas um grupo de permissões por usuário. |
-| v2.* | 6.* e 7.* | [Ver](https://github.com/tjgazel/laravel-docblock-acl/tree/masterV2) | Suporta vários grupos de permissões por usuário. |
-| v3.* | 8.* | [Ver](https://github.com/tjgazel/laravel-docblock-acl/tree/master) | Suporta vários grupos de permissões por usuário. |
+| v1.* | 5.5+, 6.* e 7.* | [Ler doc](https://github.com/tjgazel/laravel-docblock-acl/tree/masterV1) | Suporta apenas um grupo de permissões por usuário. |
+| v2.* | 6.* e 7.* | [Ler doc](https://github.com/tjgazel/laravel-docblock-acl/tree/masterV2) | Suporta vários grupos de permissões por usuário. |
+| v3.* | 8.* | [Ler doc](https://github.com/tjgazel/laravel-docblock-acl/tree/master) | Suporta vários grupos de permissões por usuário. |
 
 
 <br/>
 
--   [Instalação](#Instalação)
+-   [**Instalação**](#Instalação)
 
--   [Configurações](#Configurações)
+-   [**Configurações**](#Configurações)
 
-    -  [Migrations e seeder](#Migrations-e-seeder)
-    -  [Models](#Models)
-    -  [Middleware](#Middleware)
-    -  [Rotas ACL](#Rotas-ACL)
-    -  [Views](#Views)
-    -  [Mostrando mensagens de erro ou sucesso](#Mostrando-mensagens-de-erro-ou-sucesso)
+    -  [**Migrations e seeder**](#Migrations-e-seeder)
+    -  [**Models**](#Models)
+    -  [**Middleware**](#Middleware)
+    -  [**Rotas ACL**](#Rotas-ACL)
+    -  [**Views**](#Views)
+    -  [**Mostrando mensagens de erro ou sucesso**](#Mostrando-mensagens-de-erro-ou-sucesso)
 
--   [Exemplo de uso](#Exemplo-de-uso)
+-   [**Exemplo de uso](#Exemplo-de-uso)
 
-    -   [Mapeando recursos](#Mapeando-recursos)
-    -   [Mapeando permissões](#Mapeando-permissoes)
-    -   [Livewire Full-Page Components](#Livewire-Full-Page-Components)
-    -   [Protegendo rotas com ACL](#Protegendo-rotas-com-ACL)
-    -   [Utilizando Gate, Can, Middleware e Blade ](#Utilizando-Gate,-Can,-Middleware-e-Blade)
+    -   [**Mapeando recursos**](#Mapeando-recursos)
+    -   [**Mapeando permissões**](#Mapeando-permissoes)
+    -   [**Livewire Full-Page Components**](#Livewire-Full-Page-Components)
+    -   [**Protegendo rotas com ACL**](#Protegendo-rotas-com-ACL)
+    -   [**Utilizando Gate, Can, Middleware e Blade**](#Utilizando-Gate,-Can,-Middleware-e-Blade)
 
 <br/><br/>
 
@@ -48,7 +48,7 @@ originalmente para Zend-framework 2 por Thales F. Santos e Giovanni Camargo.
 Use o composer
 
 ```bash
-composer require tjgazel/laravel-docblock-acl
+composer require tjgazel/laravel-docblock-acl "^2.0"
 ```
 
 <br>
