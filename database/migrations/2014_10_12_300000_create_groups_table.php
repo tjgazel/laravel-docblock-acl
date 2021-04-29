@@ -16,7 +16,7 @@ class CreateGroupsTable extends Migration
         $connection = Config::get('database.default');
         $driver = Config::get("database.connections.{$connection}.driver");
 
-        Schema::create('groups', function (Blueprint $table) use ($driver) {
+        Schema::create(Config::get('acl.table.groups'), function (Blueprint $table) use ($driver) {
             if ($driver == 'mysql') {
                 $table->engine = 'InnoDB';
             }
@@ -33,6 +33,6 @@ class CreateGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('groups');
+        Schema::dropIfExists(Config::get('acl.table.groups'));
     }
 }

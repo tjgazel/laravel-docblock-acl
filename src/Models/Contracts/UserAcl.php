@@ -3,10 +3,10 @@
 namespace TJGazel\LaravelDocBlockAcl\Models\Contracts;
 
 /**
- * Interface UserAclContract
+ * Interface UserAcl
  * @package TJGazel\LaravelDocBlockAcl\Models\Contracts
  */
-interface UserAclContract
+interface UserAcl
 {
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -23,5 +23,5 @@ interface UserAclContract
 	 * @param $id
 	 * @return bool
 	 */
-	public function hasGroup($id);
+	public function hasAclGroup($id);
 }

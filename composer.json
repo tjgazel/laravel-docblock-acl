@@ -1,6 +1,6 @@
 {
     "name": "tjgazel/laravel-docblock-acl",
-    "description": "Docblock Acl for laravel 5.5+, 6 & 7",
+    "description": "ACL for laravel using docblock",
     "keywords": [
         "docblock",
         "acl",
@@ -18,21 +18,18 @@
         }
     ],
     "require": {
-        "php": ">=7.0"
+        "php": ">=7.2.5"
     },
     "require-dev": {
-        "illuminate/support": "^5.5",
-        "illuminate/http": "^5.5",
-        "illuminate/database": "^5.5",
-        "illuminate/routing": "^5.5",
-        "illuminate/contracts": "^5.5"
+        "illuminate/support": "^6.20",
+        "illuminate/http": "^6.20",
+        "illuminate/database": "^6.20",
+        "illuminate/routing": "^6.20",
+        "illuminate/contracts": "^6.20"
     },
     "autoload": {
         "files": [
             "helpers/helpers.php"
-        ],
-        "classmap": [
-            "database/seeds"
         ],
         "psr-4": {
             "TJGazel\\LaravelDocBlockAcl\\": "src/"

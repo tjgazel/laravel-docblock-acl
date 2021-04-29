@@ -4,7 +4,10 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 
-class GroupPermissionTableSeeder extends Seeder
+/**
+ * Class AclTablesSeeder
+ */
+class AclTablesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,11 +16,27 @@ class GroupPermissionTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table(Config::get('acl.table.permissions'))->insert([
+        $this->groupsSeeder();
+        $this->permissionsSeeder();
+        $this->adminPermissionsSeeder();
+    }
+
+	private function groupsSeeder()
+	{
+		DB::table(Config::get('acl.table.groups'))->insert([
+			['name' => 'Admin',	'description' => 'Group for Admin'],
+			['name' => 'Manager', 'description' => 'Group for Manager'],
+			['name' => 'Client', 'description' => 'Group for Client'],
+		]);
+	}
+
+	private function permissionsSeeder()
+	{
+		DB::table(Config::get('acl.table.permissions'))->insert([
 			'resource' => 'ACL',
 			'name' => 'List',
 			'action' => 'TJGazel\LaravelDocBlockAcl\Http\Controllers\AclController@index'
-        ]);
+		]);
 
 		DB::table(Config::get('acl.table.permissions'))->insert([
 			'resource' => 'ACL',
@@ -48,5 +67,17 @@ class GroupPermissionTableSeeder extends Seeder
 			'name' => 'Delete',
 			'action' => 'TJGazel\LaravelDocBlockAcl\Http\Controllers\AclController@destroy'
 		]);
-    }
+	}
+
+	private function adminPermissionsSeeder()
+	{
+		DB::table(Config::get('acl.table.group_permission'))->insert([
+			['group_id' => 1, 'permission_id' => 1],
+			['group_id' => 1, 'permission_id' => 2],
+			['group_id' => 1, 'permission_id' => 3],
+			['group_id' => 1, 'permission_id' => 4],
+			['group_id' => 1, 'permission_id' => 5],
+			['group_id' => 1, 'permission_id' => 6],
+		]);
+	}
 }

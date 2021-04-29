@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use TJGazel\LaravelDocBlockAcl\Facades\Acl;
 
+/**
+ * Class AclService
+ * @package TJGazel\LaravelDocBlockAcl\Services
+ */
 class AclService
 {
     /**
@@ -21,7 +25,6 @@ class AclService
         $mapPermissions = Acl::mapPermissions();
 
         if ($mapPermissions->count()) {
-
             try {
                 DB::beginTransaction();
 
@@ -31,7 +34,6 @@ class AclService
 
                 DB::commit();
             } catch (\Exception $e) {
-
                 DB::rollBack();
 
                 throw new \Exception($e->getMessage());
@@ -51,13 +53,10 @@ class AclService
         $permissionModel = Config::get('acl.model.permission');
 
         $unusedPermissions = $permissionModel::all()->filter(function ($permission) use ($mapPermissions) {
-
             $equals = false;
 
             foreach ($mapPermissions as $mapPermission) {
-
                 if ($permission->action == $mapPermission['action']) {
-
                     $equals = true;
                 }
             }
@@ -66,11 +65,8 @@ class AclService
         });
 
         if ($unusedPermissions->count()) {
-
             foreach ($unusedPermissions as $permission) {
-
                 if ($permission->groups->count()) {
-
                     $permission->groups()->detach();
                 }
 
@@ -91,7 +87,6 @@ class AclService
         $permissionModel = Config::get('acl.model.permission');
 
         $mapPermissions->each(function ($permission) use ($permissionModel) {
-
             $permissionModel::updateOrCreate(
                 ['action' => $permission['action']],
                 ['name' => $permission['name'], 'resource' => $permission['resource']]

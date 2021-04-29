@@ -16,7 +16,7 @@ class CreateGroupPermissionTable extends Migration
         $connection = Config::get('database.default');
         $driver = Config::get("database.connections.{$connection}.driver");
 
-        Schema::create('group_permission', function (Blueprint $table) use ($driver) {
+        Schema::create(Config::get('acl.table.group_permission'), function (Blueprint $table) use ($driver) {
             if ($driver == 'mysql') {
                 $table->engine = 'InnoDB';
             }
@@ -25,8 +25,8 @@ class CreateGroupPermissionTable extends Migration
 
             $table->foreign('group_id')->references('id')->on('groups');
             $table->foreign('permission_id')->references('id')->on('permissions');
-			
-			$table->primary(['group_id', 'permission_id'], 'group_permission_primary');
+
+			$table->unique(['group_id', 'permission_id'], 'group_permission_unique');
         });
     }
 
@@ -37,6 +37,6 @@ class CreateGroupPermissionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('group_permission');
+        Schema::dropIfExists(Config::get('acl.table.group_permission'));
     }
 }

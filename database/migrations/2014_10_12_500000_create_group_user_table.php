@@ -1,11 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddUsersForeignColumn extends Migration
+class CreateGroupUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -17,13 +16,18 @@ class AddUsersForeignColumn extends Migration
         $connection = Config::get('database.default');
         $driver = Config::get("database.connections.{$connection}.driver");
 
-        Schema::table('users', function (Blueprint $table) use ($driver) {
+        Schema::table(Config::get('acl.table.group_user'), function (Blueprint $table) use ($driver) {
             if ($driver == 'mysql') {
-                DB::statement('ALTER TABLE users ENGINE = InnoDB');
+				$table->engine = 'InnoDB';
             }
-            $table->unsignedInteger('group_id')->nullable()->after('id');
 
-            $table->foreign('group_id')->references('id')->on('groups');
+			$table->unsignedInteger('group_id');
+			$table->unsignedBigInteger('user_id');
+
+			$table->foreign('group_id')->references('id')->on(Config::get('acl.table.groups'));
+			$table->foreign('user_id')->references('id')->on(Config::get('acl.table.users'));
+
+			$table->unique(['group_id', 'user_id'], 'group_user_unique');
         });
     }
 
@@ -34,12 +38,6 @@ class AddUsersForeignColumn extends Migration
      */
     public function down()
     {
-        Schema::disableForeignKeyConstraints();
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign('group_id');
-
-            $table->dropColumn('group_id');
-        });
-        Schema::enableForeignKeyConstraints();
+		Schema::dropIfExists(Config::get('acl.table.group_user'));
     }
 }

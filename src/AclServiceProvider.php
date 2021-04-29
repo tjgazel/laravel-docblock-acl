@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use TJGazel\LaravelDocBlockAcl\Acl;
 
 class AclServiceProvider extends ServiceProvider
 {
@@ -32,7 +33,7 @@ class AclServiceProvider extends ServiceProvider
 
         $this->publishes([__DIR__ . '/../database/migrations/' => database_path('migrations')], 'acl:migrations');
 
-        $this->publishes([__DIR__ . '/../database/seeds/GroupsTableSeeder.php' => database_path('seeds/CustomGroupsTableSeeder.php')], 'acl:groups-seeder');
+        $this->publishes([__DIR__ . '/../database/seeds/' => database_path('seeds')], 'acl:seeder');
 
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'acl');
 
@@ -40,9 +41,9 @@ class AclServiceProvider extends ServiceProvider
 
         $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'acl');
 
-		$this->publishes([__DIR__ . '/../resources/lang' => resource_path('lang/vendor/acl')], 'acl:translations');
+        $this->publishes([__DIR__ . '/../resources/lang' => resource_path('lang/vendor/acl')], 'acl:translations');
 
-		$this->regiterGates();
+        $this->regiterGates();
     }
 
     /**
@@ -53,7 +54,7 @@ class AclServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(Acl::class, function ($app) {
-            return new Acl;
+            return new Acl();
         });
     }
 
@@ -65,27 +66,30 @@ class AclServiceProvider extends ServiceProvider
     public function provides()
     {
         return [Acl::class];
-	}
+    }
 
-	/**
+    /**
      * @return void
      */
-    private function regiterGates()
+    protected function regiterGates()
     {
-		try {
-			$permissionModel = Config::get('acl.model.permission');
+        try {
+            $permissionModel = Config::get('acl.model.permission');
 
-			$permissions = $permissionModel::all();
+            $permissions = $permissionModel::all();
 
-			foreach ($permissions as $permission) {
-				$name = Str::slug($permission->resource, '_') . '.' . Str::slug($permission->name, '_');
+            foreach ($permissions as $permission) {
+                $name =
+                Str::slug($permission->resource, '_') .
+                '.' .
+                Str::slug($permission->name, '_');
 
-				Gate::define($name, function($user) use ($permission) {
-					return $user->hasAclPermission($permission);
-				});
-			}
-		} catch (\Exception $e) {
-			Log::error($e->getMessage());
-		}
+                Gate::define($name, function ($user) use ($permission) {
+                    return $user->hasAclPermission($permission);
+                });
+            }
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+        }
     }
 }

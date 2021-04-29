@@ -5,19 +5,45 @@ namespace TJGazel\LaravelDocBlockAcl\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 
+/**
+ * Class Group
+ * @package TJGazel\LaravelDocBlockAcl\Models
+ */
 class Group extends Model
 {
-    public $timestamps = false;
+	/**
+	 * @var bool
+	 */
+	public $timestamps = false;
 
-    protected $fillable = ['name', 'description'];
+	/**
+	 * @var string[]
+	 */
+	protected $fillable = ['name', 'description'];
 
-    public function permissions()
-    {
-        return $this->belongsToMany(Config::get('acl.model.permission'), 'group_permission', 'group_id', 'permission_id');
-    }
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+	 */
+	public function permissions()
+	{
+		return $this->belongsToMany(
+			Config::get('acl.model.permission'),
+			Config::get('acl.table.group_permission'),
+			'group_id',
+			'permission_id'
+		);
+	}
 
-    public function users()
-    {
-        return $this->hasMany(Config::get('acl.model.user'), 'group_id', 'id');
-    }
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+	 */
+	public function users()
+	{
+		return $this->belongsToMany(
+			Config::get('acl.model.user'),
+			Config::get('acl.table.group_user'),
+			'group_id',
+			'user_id'
+		);
+	}
 }

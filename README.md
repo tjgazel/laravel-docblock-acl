@@ -1,11 +1,26 @@
-# Docblock ACL para Laravel 5.5+, 6 e 7
+# Docblock ACL para Laravel
+
+[![Latest Stable Version](https://poser.pugx.org/tjgazel/laravel-docblock-acl/v/stable)](https://packagist.org/packages/tjgazel/laravel-docblock-acl)
+[![License](https://poser.pugx.org/tjgazel/laravel-docblock-acl/license)](https://github.com/tjgazel/laravel-docblock-acl/blob/master/LICENSE)
+[![Total Downloads](https://poser.pugx.org/tjgazel/laravel-docblock-acl/downloads)](https://packagist.org/packages/tjgazel/laravel-docblock-acl)
 
 [English docs](README_en.md)
 
-Este pacote para laravel usa os docblocks nas ações dos controladores para definir permissões de acesso
-em todo seu sistema.
+Este pacote usa o docblock das ações dos controladores para definir permissões de acesso ao seu sistema. Foi idealizado e desenvolvido 
+originalmente para Zend-framework 2 por Thales F. Santos e Giovanni Camargo.
 
-<br>
+**Compatível com Livewire Full-Page Components.**
+
+<br/>
+
+| Releases | Laravel | Docs | Obs. |
+| ------- | -------------- | -----| ---- |
+| v1.* | 5.5+, 6.* e 7.* | [Ver](https://github.com/tjgazel/laravel-docblock-acl/tree/masterV1) | Suporta apenas um grupo de permissões por usuário. |
+| v2.* | 6.* e 7.* | [Ver](https://github.com/tjgazel/laravel-docblock-acl/tree/masterV2) | Suporta vários grupos de permissões por usuário. |
+| v3.* | 8.* | [Ver](https://github.com/tjgazel/laravel-docblock-acl/tree/master) | Suporta vários grupos de permissões por usuário. |
+
+
+<br/>
 
 -   [Instalação](#Instalação)
 
@@ -14,14 +29,15 @@ em todo seu sistema.
     -  [Migrations e seeder](#Migrations-e-seeder)
     -  [Models](#Models)
     -  [Middleware](#Middleware)
-    -  [Rotas para manutenção do ACL](#Rotas-para-manutenção-do-ACL)
+    -  [Rotas ACL](#Rotas-ACL)
     -  [Views](#Views)
     -  [Mostrando mensagens de erro ou sucesso](#Mostrando-mensagens-de-erro-ou-sucesso)
 
 -   [Exemplo de uso](#Exemplo-de-uso)
 
     -   [Mapeando recursos](#Mapeando-recursos)
-    -   [Mapeando permissões](#Mapeando-permissões)
+    -   [Mapeando permissões](#Mapeando-permissoes)
+    -   [Livewire Full-Page Components](#Livewire-Full-Page-Components)
     -   [Protegendo rotas com ACL](#Protegendo-rotas-com-ACL)
     -   [Utilizando Gate, Can, Middleware e Blade ](#Utilizando-Gate,-Can,-Middleware-e-Blade)
 
@@ -47,7 +63,7 @@ Este comando irá fazer as seguintes alterações:
 
 -   Adicionar o arquivo de configuração `acl.php` no diretório `config`.
 -   Adicionar as migrações para o ACL.
--   Adicionar um arquivo de seeder para a tabela groups.
+-   Adicionar um arquivo de seeder.
 -   Adicionar as views do ACL em `resources/views/vendor/acl`.
 -   Adicionar os aquivos de tradução em `resources/lang/vendor/acl/en` e `resources/lang/vendor/acl/pt_BR`.
 
@@ -64,10 +80,18 @@ return [
     'model' => [
         'user' => '\App\User',
         'group' => '\TJGazel\LaravelDocBlockAcl\Models\Group',
-        'permission' => '\TJGazel\LaravelDocBlockAcl\Models\Permission'
+        'permission' => '\TJGazel\LaravelDocBlockAcl\Models\Permission',
+    ],
+    
+    'table' => [
+        'users' => 'users',
+        'groups' => 'groups',
+        'permissions' => 'permissions',
+        'group_permission' => 'group_permission',
+        'group_user' => 'group_user',
     ],
 
-    'session_error'   => 'acl_error',
+    'session_error' => 'acl_error',
 
     'session_success' => 'acl_success',
 ];
@@ -76,8 +100,6 @@ return [
 
 ### Migrations e seeder
 
-Será criado as tabelas no banco de dados e adicionado uma chave estrangeira (group_id) na tabela Users conforme o esquema da figura abaixo.
-
 ![Screenshot 01](./screenshot03.png)
 
 ```bash
@@ -85,21 +107,22 @@ php artisan migrate
 ```
 
 ```bash
-php artisan db:seed --class=GroupsTableSeeder
+php artisan db:seed --class=AclTablesSeeder
 ```
 
-> Se a sua tabela Users já tiver algum registro de usuário, deverá associar um grupo para ele.
+> O seeder Acl irá popular os grupos e permissões iniciais. Você deverá ligar manualmente um id de usuário ao grupo
+> Admin (id 1) na tabela pivot `group_user` para ter acesso ao painel de controle de permissões.
 
 <br/><br/>
 
 ### Models
 
-No model `User`, implemente a interface `UserAclContract`. Adicione também a trait `UserAcltrait`.
+No model `User`, implemente a interface `UserAcl`. Adicione também a trait `UserAcl`.
 
 ```php
 // ....
-use TJGazel\LaravelDocBlockAcl\Models\Contracts\UserAclContract;
-use TJGazel\LaravelDocBlockAcl\Models\traits\UserAcltrait;
+use TJGazel\LaravelDocBlockAcl\Models\Contracts\UserAcl as UserAclContract;
+use TJGazel\LaravelDocBlockAcl\Models\traits\UserAcl as UserAcltrait;
 
 class User extends Authenticatable implements UserAclContract
 {
@@ -121,7 +144,7 @@ protected $routeMiddleware = [
 ```
 <br/><br/>
 
-### Rotas para manutenção do ACL
+### Rotas ACL
 
 Adicione em seu arquivo de rotas Api ou Web a função abaixo. As rotas irão responder de acordo com o tipo de solicitação. Lembre-se que ACL funciona em conjunto com o login. Assumimos então que você já tenha instalado o sistema padrão de login do laravel usado `php artisan make:auth`
 
@@ -263,10 +286,40 @@ Após esse mapeamento, acesse a rota `**localhost:8000/acl**` para que o sistema
 
 <br/><br/>
 
-### Protegendo rotas com ACL
+### Livewire Full-Page Components
+Ao utilizar Livewire Full-Page Components só é possível mapear o método render, então leve em consideração
+que cada componente deve ter uma ação bem específica para manter a semantica do ACL.
 
-> **Observação:**
-> Antes de proteger suas rotas, faça o mapeamentos dos recursos e permissões nos controllers e através da rota (por padrão) `/acl` , atribua as permissões aos tipos de usuários.
+```php
+Route::get('posts/create', 'Livewire\Posts\PostCreate');
+```
+
+```php
+namespace App\Http\Livewire\Posts;
+
+use Livewire\Component;
+
+/** @permissionResource('Posts') */
+class PostCreate extends Component
+{
+    /**
+     * @permissionName('Create')
+     */
+    public function render()
+    {
+        return view('livewire.posts.create')->layout('layouts.app');
+    }
+    
+    public function onSubmit()
+    {
+        //...
+    }
+}
+```
+
+<br/><br/>
+
+### Protegendo rotas com ACL
 
 Basta agrupar suas rotas com o middleware ACL.
 
@@ -277,6 +330,8 @@ Route::middleware(['auth', 'acl'])->group(function() {
 ```
 
 > **Observação:**
+> Antes de proteger suas rotas, faça o mapeamentos dos recursos e permissões nos controllers e através da rota (por padrão) `/acl` , atribua as permissões aos tipos de usuários.
+>
 > ACL funciona em conjunto com autenticação, portando recomenda-se mapear apenas as ações dos controladores que estiverem protegidas pelos middlewares `auth`, `auth:api` ou outro personalizado.
 
 <br/><br/>
@@ -295,9 +350,10 @@ Seguindo o exemplo do mapeamento do controller na sessão acima teremos as segui
 
 Segue alguns exemplos de uso:
 
-<br/><br/>
+<br/>
 
-Veja um exemplo em que o usuário deve pertencer a um grupo que contém uma permissão expecífica (`acl.list_all_groups`) para visualizar o link `Permissões do sistema`. Utilizando a diretiva `@can` do Blade podemos facilmente fazer isso.
+O usuário deve pertencer a um grupo que contém uma permissão expecífica (`acl.list_all_groups`) para visualizar o link `Permissões do sistema`. Utilizando a diretiva `@can` do Blade podemos facilmente fazer isso.
+
 ```html
 <nav class="mt-2">
     <ul class="nav nav-pills nav-sidebar flex-column nav-flat" data-widget="treeview" role="menu" data-accordion="false">

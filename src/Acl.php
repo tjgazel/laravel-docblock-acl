@@ -2,128 +2,162 @@
 
 namespace TJGazel\LaravelDocBlockAcl;
 
-use Illuminate\Support\Facades\Route as RouteFacade;
 use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Route as RouteFacade;
 
+/**
+ * Class Acl
+ * @package TJGazel\LaravelDocBlockAcl
+ */
 class Acl
 {
-	private $middleware;
-	private $prefixURL;
-	private $prefixRouteName;
+    /**
+     * @var array $middleware
+     */
+    protected $middleware;
 
-	public function routes(array $options = [])
-	{
-		$default = [
-			'middleware' => ['auth', 'acl'],
-			'prefix' => 'acl',
-			'name' => 'acl.'
-		];
+    /**
+     * @var string $prefixURL
+     */
+    protected $prefixURL;
 
-		$config = count($options) > 0 ? array_merge($default, $options) : $default;
+    /**
+     * @var string $prefixRouteName
+     */
+    protected $prefixRouteName;
 
-		$this->middleware = $config['middleware'];
-		$this->prefixURL = "/{$config['prefix']}";
-		$this->prefixRouteName = "{$config['name']}";
+    /**
+     * @var array $defaultOptions
+     */
+    protected $defaultOptions = [
+        'middleware' => ['auth', 'acl'],
+        'prefix' => 'acl',
+        'name' => 'acl.',
+    ];
 
-		RouteFacade::middleware($config['middleware'])
-			->prefix($config['prefix'])
-			->name($config['name'])
-			->namespace('\TJGazel\LaravelDocBlockAcl\Http\Controllers')
-			->group(function () {
-				RouteFacade::name('index')->get('', 'AclController@index');
-				RouteFacade::name('store')->post('', 'AclController@store');
-				RouteFacade::name('create')->get('create', 'AclController@create');
-				RouteFacade::name('edit')->get('{id}/edit', 'AclController@edit');
-				RouteFacade::name('update')->put('{id}', 'AclController@update');
-				RouteFacade::name('destroy')->delete('{id}', 'AclController@destroy');
-			});
-	}
+    /**
+     * @param array $options ['middleware' => ['auth', 'acl'], 'prefix' => 'acl', 'name' => 'acl.'];
+     */
+    public function routes(array $options = [])
+    {
+        $this->mergeDefaultOptions($options);
 
-	/**
-	 * Returns the middleware set of the route
-	 * Retorna o conjunto de middlewares da rota
-	 *
-	 * @return string
-	 */
-	public function getMiddleware()
-	{
-		return $this->middleware;
-	}
+        RouteFacade::middleware($this->middleware)
+            ->prefix($this->prefixURL)
+            ->name($this->prefixRouteName)
+            ->namespace('\TJGazel\LaravelDocBlockAcl\Http\Controllers')
+            ->group(function () {
+                RouteFacade::name('index')->get('', 'AclController@index');
+                RouteFacade::name('store')->post('', 'AclController@store');
+                RouteFacade::name('create')->get('create', 'AclController@create');
+                RouteFacade::name('edit')->get('{id}/edit', 'AclController@edit');
+                RouteFacade::name('update')->put('{id}', 'AclController@update');
+                RouteFacade::name('destroy')->delete('{id}', 'AclController@destroy');
+            });
+    }
 
-	/**
-	 * Returns route url prefix
-	 * Retorna prefixo da url da rota
-	 *
-	 * @return string
-	 */
-	public function getPrefixURL()
-	{
-		return $this->prefixURL;
-	}
+    /**
+     * Returns the middleware set of the route
+     * Retorna o conjunto de middlewares da rota
+     *
+     * @return string
+     */
+    public function getMiddleware()
+    {
+        return $this->middleware;
+    }
 
-	/**
-	 * Return route name prefix
-	 * Retorna prefixo do nome da rota
-	 *
-	 * @return string
-	 */
-	public function getPrefixRouteName()
-	{
-		return $this->prefixRouteName;
-	}
+    /**
+     * Returns route url prefix
+     * Retorna prefixo da url da rota
+     *
+     * @return string
+     */
+    public function getPrefixURL()
+    {
+        return $this->prefixURL;
+    }
 
-	/**
-	 * Returns collection of permissions to be synchronized.
-	 * Retorna coleção das permissões as serem sincronizadas.
-	 *
-	 * @return \Illuminate\Support\Collection
-	 */
-	public function mapPermissions()
-	{
-		return $this->routesWithPermission()->map(function (Route $route) {
+    /**
+     * Return route name prefix
+     * Retorna prefixo do nome da rota
+     *
+     * @return string
+     */
+    public function getPrefixRouteName()
+    {
+        return $this->prefixRouteName;
+    }
 
-			$actionName = $route->getActionName();
-			$controllerMethods = explode('@', $actionName);
+    /**
+     * Returns collection of permissions to be synchronized.
+     * Retorna coleção das permissões as serem sincronizadas.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function mapPermissions()
+    {
+        return $this->routesWithPermission()->map(function (Route $route) {
+            $actionName = $route->getActionName();
 
-			$reflectionClass = new \ReflectionClass($controllerMethods[0]);
+            if (strstr($actionName, '@')) {
+                $controllerMethods = explode('@', $actionName);
+            }
 
-			$method = strstr(
-				$reflectionClass->getMethod($controllerMethods[1])->getDocComment(),
-				"@permissionName('"
-			);
-			$method = strstr($method, "')", true);
-			$method = (explode("('", $method))[1] ?? $controllerMethods[1];
+            $controller = $controllerMethods[0] ?? $actionName;
+            $method = $controllerMethods[1] ?? 'render';
+            $reflectionClass = new \ReflectionClass($controller);
+            $name = strstr(
+                $reflectionClass->getMethod($method)->getDocComment(),
+                "@permissionName('"
+            );
+            $name = strstr($name, "')", true);
+            $name = (explode("('", $name))[1] ?? $actionName;
+            $resource = strstr($reflectionClass->getDocComment(), "@permissionResource('");
+            $resource = strstr($resource, "')", true);
+            $resource = (explode("('", $resource))[1] ?? $actionName;
 
-			$controller = strstr($reflectionClass->getDocComment(), "@permissionResource('");
-			$controller = strstr($controller, "')", true);
-			$controller = (explode("('", $controller))[1] ?? $controllerMethods[0];
+            return ['name' => $name, 'resource' => $resource, 'action' => $actionName];
+        });
+    }
 
-			return ['name' => $method, 'resource' => $controller, 'action' => $actionName];
-		});
-	}
+    /**
+     * Returns routes that contain permission labels.
+     * Retorna rotas que contém rótulos de permissão.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function routesWithPermission()
+    {
+        return collect(RouteFacade::getRoutes()->getIterator())->filter(function (Route $route) {
+            $actionName = $route->getActionName();
 
-	/**
-	 * Returns routes that contain permission labels.
-	 * Retorna rotas que contém rótulos de permissão.
-	 *
-	 * @return \Illuminate\Support\Collection
-	 */
-	public function routesWithPermission()
-	{
-		return collect(RouteFacade::getRoutes()->getIterator())->filter(function (Route $route) {
+            if (strstr($actionName, '@')) {
+                $controllerMethods = explode('@', $actionName);
+            }
 
-			$actionName = $route->getActionName();
+            $controller = $controllerMethods[0] ?? $actionName;
+            $method = $controllerMethods[1] ?? 'render';
+            $reflectionClass = new \ReflectionClass($controller);
 
-			if (strstr($actionName, '@')) {
+            if ($reflectionClass->hasMethod($method)) {
+                return strstr($reflectionClass->getMethod($method)->getDocComment(), "@permissionName('");
+            }
 
-				$controllerMethods = explode('@', $actionName);
+            return false;
+        });
+    }
 
-				$reflectionClass = new \ReflectionClass($controllerMethods[0]);
+    /**
+     * @param array $options
+     * @return void
+     */
+    protected function mergeDefaultOptions(array $options)
+    {
+        $merged = count($options) > 0 ? array_merge($this->defaultOptions, $options) : $this->defaultOptions;
 
-				return strstr($reflectionClass->getMethod($controllerMethods[1])->getDocComment(), "@permissionName('");
-			}
-
-			return false;
-		});
-	}
+        $this->middleware = $merged['middleware'];
+        $this->prefixURL = "/{$merged['prefix']}";
+        $this->prefixRouteName = "{$merged['name']}";
+    }
 }

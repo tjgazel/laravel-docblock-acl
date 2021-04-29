@@ -6,10 +6,10 @@ use Illuminate\Support\Facades\Config;
 use TJGazel\LaravelDocBlockAcl\Models\Permission;
 
 /**
- * Trait UserAclTrait
+ * Trait UserAcl
  * @package TJGazel\LaravelDocBlockAcl\Models\Traits
  */
-trait UserAclTrait
+trait UserAcl
 {
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -49,7 +49,7 @@ trait UserAclTrait
 	 * @param int|array $id
 	 * @return bool
 	 */
-	public function hasGroup($id)
+	public function hasAclGroup($id)
 	{
 		if (is_array($id)) {
 			return $this->groups()->whereIn('id', $id)->count();
