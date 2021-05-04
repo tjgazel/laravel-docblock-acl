@@ -3,7 +3,6 @@
 namespace TJGazel\LaravelDocBlockAcl\Models\Traits;
 
 use Illuminate\Support\Facades\Config;
-use TJGazel\LaravelDocBlockAcl\Models\Permission;
 
 /**
  * Trait UserAcl
@@ -28,7 +27,7 @@ trait UserAcl
      * @param \TJGazel\LaravelDocBlockAcl\Models\Permission $permission
      * @return bool
      */
-    public function hasAclPermission(Permission $permission)
+    public function hasAclPermission($permission)
     {
         $groups = $permission->groups;
 
