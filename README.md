@@ -78,7 +78,7 @@ Abra o arquivo `config/acl.php` e configure o namespace correto para sua model `
 ```php
 return [
     'model' => [
-        'user' => '\App\User',
+        'user' => '\App\Models\User',
         'group' => '\TJGazel\LaravelDocBlockAcl\Models\Group',
         'permission' => '\TJGazel\LaravelDocBlockAcl\Models\Permission',
     ],
