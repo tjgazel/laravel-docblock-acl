@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Schema;
 
 class CreateGroupUserTable extends Migration
 {
@@ -16,18 +17,18 @@ class CreateGroupUserTable extends Migration
         $connection = Config::get('database.default');
         $driver = Config::get("database.connections.{$connection}.driver");
 
-        Schema::table(Config::get('acl.table.group_user'), function (Blueprint $table) use ($driver) {
+        Schema::create(Config::get('acl.table.group_user'), function (Blueprint $table) use ($driver) {
             if ($driver == 'mysql') {
-				$table->engine = 'InnoDB';
+                $table->engine = 'InnoDB';
             }
 
-			$table->unsignedInteger('group_id');
-			$table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('group_id');
+            $table->unsignedBigInteger('user_id');
 
-			$table->foreign('group_id')->references('id')->on(Config::get('acl.table.groups'));
-			$table->foreign('user_id')->references('id')->on(Config::get('acl.table.users'));
+            $table->foreign('group_id')->references('id')->on(Config::get('acl.table.groups'));
+            $table->foreign('user_id')->references('id')->on(Config::get('acl.table.users'));
 
-			$table->unique(['group_id', 'user_id'], 'group_user_unique');
+            $table->unique(['group_id', 'user_id'], 'group_user_unique');
         });
     }
 
@@ -38,6 +39,6 @@ class CreateGroupUserTable extends Migration
      */
     public function down()
     {
-		Schema::dropIfExists(Config::get('acl.table.group_user'));
+        Schema::dropIfExists(Config::get('acl.table.group_user'));
     }
 }

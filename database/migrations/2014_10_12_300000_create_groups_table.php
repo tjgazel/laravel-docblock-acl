@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Schema;
 
 class CreateGroupsTable extends Migration
 {
@@ -20,7 +21,7 @@ class CreateGroupsTable extends Migration
             if ($driver == 'mysql') {
                 $table->engine = 'InnoDB';
             }
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('name');
             $table->string('description')->nullable();
         });

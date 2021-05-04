@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Schema;
 
 class CreateGroupPermissionTable extends Migration
 {
@@ -20,13 +21,13 @@ class CreateGroupPermissionTable extends Migration
             if ($driver == 'mysql') {
                 $table->engine = 'InnoDB';
             }
-            $table->unsignedInteger('group_id');
+            $table->unsignedBigInteger('group_id');
             $table->unsignedBigInteger('permission_id');
 
-            $table->foreign('group_id')->references('id')->on('groups');
-            $table->foreign('permission_id')->references('id')->on('permissions');
+            $table->foreign('group_id')->references('id')->on(Config::get('acl.table.groups'));
+            $table->foreign('permission_id')->references('id')->on(Config::get('acl.table.permissions'));
 
-			$table->unique(['group_id', 'permission_id'], 'group_permission_unique');
+            $table->unique(['group_id', 'permission_id'], 'group_permission_unique');
         });
     }
 
