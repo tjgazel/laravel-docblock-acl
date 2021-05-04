@@ -1,4 +1,4 @@
-# Docblock ACL para Laravel
+# ACL para Laravel
 
 [![Latest Stable Version](https://poser.pugx.org/tjgazel/laravel-docblock-acl/v/stable)](https://packagist.org/packages/tjgazel/laravel-docblock-acl)
 [![License](https://poser.pugx.org/tjgazel/laravel-docblock-acl/license)](https://github.com/tjgazel/laravel-docblock-acl/blob/master/LICENSE)
@@ -15,9 +15,9 @@ originalmente para Zend-framework 2 por Thales F. Santos e Giovanni Camargo.
 
 | Releases | Laravel | Docs | Obs. |
 | ------- | -------------- | -----| ---- |
-| v1.* | 5.5+, 6.* e 7.* | [Ler doc](https://github.com/tjgazel/laravel-docblock-acl/tree/masterV1) | Suporta apenas um grupo de permissões por usuário. |
-| v2.* | 6.* e 7.* | [Ler doc](https://github.com/tjgazel/laravel-docblock-acl/tree/masterV2) | Suporta vários grupos de permissões por usuário. |
-| v3.* | 8.* | [Ler doc](https://github.com/tjgazel/laravel-docblock-acl/tree/master) | Suporta vários grupos de permissões por usuário. |
+| v1.* | 5.5+, 6 e 7 | [Ler doc](https://github.com/tjgazel/laravel-docblock-acl/tree/masterV1) | Suporta **apenas um grupo** de permissões por usuário. |
+| v2.* | 6 e 7 | [Ler doc](https://github.com/tjgazel/laravel-docblock-acl/tree/masterV2) | Suporta **vários grupos** de permissões por usuário. |
+| v3.* | 8 | [Ler doc](https://github.com/tjgazel/laravel-docblock-acl/tree/master) | Suporta **vários grupos** de permissões por usuário. |
 
 <br>
 
