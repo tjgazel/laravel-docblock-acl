@@ -48,7 +48,7 @@ originalmente para Zend-framework 2 por Thales F. Santos e Giovanni Camargo.
 Use o composer
 
 ```bash
-composer require tjgazel/laravel-docblock-acl "^2.0"
+composer require tjgazel/laravel-docblock-acl
 ```
 
 <br>
