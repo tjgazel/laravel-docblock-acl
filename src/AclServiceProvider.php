@@ -33,7 +33,7 @@ class AclServiceProvider extends ServiceProvider
 
         $this->publishes([__DIR__ . '/../database/migrations/' => database_path('migrations')], 'acl:migrations');
 
-        $this->publishes([__DIR__ . '/../database/seeds/' => database_path('seeds')], 'acl:seeder');
+        $this->publishes([__DIR__ . '/../database/seeders/' => database_path('seeders')], 'acl:seeders');
 
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'acl');
 
