@@ -7,17 +7,17 @@ use Illuminate\Support\Facades\Config;
 
 class Permission extends Model
 {
-	public $timestamps = false;
+    public $timestamps = false;
 
-	protected $fillable = ['name', 'resource', 'action'];
+    protected $fillable = ['name', 'resource', 'action'];
 
-	public function groups()
-	{
-		return $this->belongsToMany(
-			Config::get('acl.model.group'),
-			Config::get('acl.table.group_permission'),
-			'permission_id',
-			'group_id'
-		);
-	}
+    public function groups()
+    {
+        return $this->belongsToMany(
+            Config::get('acl.model.group'),
+            Config::get('acl.table.group_permission'),
+            'permission_id',
+            'group_id'
+        );
+    }
 }

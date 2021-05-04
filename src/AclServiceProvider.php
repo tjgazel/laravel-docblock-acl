@@ -79,10 +79,7 @@ class AclServiceProvider extends ServiceProvider
             $permissions = $permissionModel::all();
 
             foreach ($permissions as $permission) {
-                $name =
-                Str::slug($permission->resource, '_') .
-                '.' .
-                Str::slug($permission->name, '_');
+                $name = Str::slug($permission->resource, '_') . '.' . Str::slug($permission->name, '_');
 
                 Gate::define($name, function ($user) use ($permission) {
                     return $user->hasAclPermission($permission);
