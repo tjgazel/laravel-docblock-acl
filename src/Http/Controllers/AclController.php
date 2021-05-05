@@ -65,7 +65,7 @@ class AclController extends Controller
         }
 
         $form = [
-            'type'   => 'create',
+            'type' => 'create',
             'action' => route(aclPrefixRoutName() . 'store'),
             'method' => 'POST',
         ];
@@ -83,7 +83,7 @@ class AclController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'        => 'required|max:255',
+            'name' => 'required|max:255',
             'description' => 'max:255',
         ]);
 
@@ -138,7 +138,7 @@ class AclController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $groupModel      = Config::get('acl.model.group');
+        $groupModel = Config::get('acl.model.group');
         $permissionModel = Config::get('acl.model.permission');
 
         $group = $groupModel::findOrFail($id)->load('permissions');
@@ -153,7 +153,7 @@ class AclController extends Controller
         }
 
         $form = [
-            'type'   => 'edit',
+            'type' => 'edit',
             'action' => route(aclPrefixRoutName() . 'update', ['id' => $group->id]),
             'method' => 'PUT',
         ];
@@ -172,7 +172,7 @@ class AclController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name'        => 'required|max:255',
+            'name' => 'required|max:255',
             'description' => 'max:255',
         ]);
 
@@ -233,8 +233,11 @@ class AclController extends Controller
             if ($request->has('group_new_assoc')) {
                 if ($request->get('group_new_assoc') != $group->id) {
                     foreach ($group->users as $user) {
-                        $user->group_id = $request->get('group_new_assoc');
-                        $user->save();
+                        $user->groups()->detach($id);
+
+                        if (!$user->hasAclGroup($request->get('group_new_assoc'))) {
+                            $user->groups()->attach($request->get('group_new_assoc'));
+                        }
                     }
                 } else {
                     throw new \Exception(__('acl::view.equal_assoc'));
