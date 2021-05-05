@@ -1,55 +1,76 @@
-@extends('layouts.app')
+<x-app-layout>
+  <x-slot name="header">
+    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+      ACL - {{ __('acl::view.users_groups') }}
+    </h2>
+  </x-slot>
 
-@section('content')
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-12 col-md-10 col-lg-8">
-        <div class="card shadow-lg">
-          <div class="card-header d-flex flex-row align-items-center justify-content-between">
-            <h2 class="h5 m-0">{{ __('acl::view.users_groups') }}</h2>
-          </div>
-          <div class="card-body">
-            @include('acl::_msg')
-            <div class="table-responsive">
-              <table class="table table-middle table-hover table-sm">
-                <thead>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+    <div class="flex flex-col">
+      <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+          <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
+                    #
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
+                    {{ __('acl::view.group') }}
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
+                    {{ __('acl::view.description') }}
+                  </th>
+                  <th scope="col" class="px-6 py-4 whitespace-nowrap text-right">
+                    <a href="{{ route(aclPrefixRoutName() . 'create') }}"
+                      class="py-1 px-2 font-semibold rounded shadow-md text-white text-sm bg-blue-500 hover:bg-blue-600">
+                      {{ __('acl::view.new') }}
+                    </a>
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                @foreach ($groups as $group)
                   <tr>
-                    <th>#</th>
-                    <th>{{ __('acl::view.group') }}</th>
-                    <th>{{ __('acl::view.description') }}</th>
-                    <td class="text-right">
-                      <a href="{{ route(aclPrefixRoutName() . 'create') }}"
-                        class="btn btn-circle btn-outline-primary btn-sm">
-                        {{ __('acl::view.new') }}
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $group->id }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $group->name }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $group->description }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <a href="{{ route(aclPrefixRoutName() . 'edit', ['id' => $group->id]) }}"
+                        class="py-1 px-2 mr-2 font-semibold rounded shadow-md text-white text-xs bg-yellow-500 hover:bg-yellow-600">
+                        {{ __('acl::view.edit') }}
                       </a>
+                      <button type="button"
+                        class="py-1 px-2 font-semibold rounded shadow-md text-white text-xs bg-red-500 hover:bg-red-600"
+                        onclick="openAclModal({{ $group->id }})">
+                        {{ __('acl::view.delete') }}
+                      </button>
+                      @include('acl::_confirm-modal-delete')
                     </td>
                   </tr>
-                </thead>
-                <tbody>
-                  @foreach ($groups as $group)
-                    <tr>
-                      <td>{{ $group->id }}</td>
-                      <td>{{ $group->name }}</td>
-                      <td>{{ $group->description }}</td>
-                      <td class="text-right">
-                        <a href="{{ route(aclPrefixRoutName() . 'edit', ['id' => $group->id]) }}"
-                          class="btn btn-outline-warning btn-sm">
-                          {{ __('acl::view.edit') }}
-                        </a>
-                        <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal"
-                          data-target="#aclModal{{ $group->id }}">
-                          {{ __('acl::view.delete') }}
-                        </button>
-                        @include('acl::_confirm-modal-delete')
-                      </td>
-                    </tr>
-                  @endforeach
-                </tbody>
-              </table>
-            </div>
+                @endforeach
+              </tbody>
+            </table>
+
           </div>
         </div>
       </div>
     </div>
   </div>
-@endsection
+
+  <script type="text/javascript">
+    let aclModalElement = null;
+
+    var openAclModal = function(id) {
+      aclModalElement = document.getElementById('acl-modal-' + id);
+      aclModalElement.classList.remove('hidden');
+    }
+
+    var closeAclModal = function(id) {
+      aclModalElement = document.getElementById('acl-modal-' + id);
+      aclModalElement.classList.add('hidden');
+    }
+
+  </script>
+</x-app-layout>

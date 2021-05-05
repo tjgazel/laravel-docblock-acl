@@ -13,7 +13,7 @@ return [
     'editing_group' => 'Editando o grupo: :Group',
     'delete' => 'Excluir',
     'confirm_delete_title' => 'Deseja excluir o grupo: :Group ?',
-    'confirm_delete_msg1' => 'Existe usuários associados a este grupo. Selecione abaixo para qual grupo eles serão vinculados após a exclusão.',
+    'confirm_delete_msg1' => 'Existe usuários associados a este grupo. <br> Selecione abaixo para qual grupo eles serão vinculados <br> após a exclusão.',
     'confirm_delete_msg2' => 'Esta exclusão será permanente!',
     'cancel' => 'Cancelar',
     'save' => 'Salvar',
