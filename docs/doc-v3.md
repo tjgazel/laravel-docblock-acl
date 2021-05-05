@@ -191,10 +191,10 @@ As views ACL a partir da versão 3 extendem o template `resource/views/layouts/a
 -   pt_BR
 
 `localhost:8000/acl`
-![Screenshot 01](./screenshot01.png)
+![Screenshot 01](./screenshot05.png)
 
 `localhost:8000/1/edit`
-![Screenshot 01](./screenshot02.png)
+![Screenshot 01](./screenshot06.png)
 
 <br/><br/>
 
