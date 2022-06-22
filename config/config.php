@@ -1,21 +1,17 @@
 <?php
 
+use App\Models\User;
+use TJGazel\LaravelDocBlockAcl\Models\Group;
+use TJGazel\LaravelDocBlockAcl\Models\Permission;
+
 return [
-    'model' => [
-        'user' => '\App\Models\User',
-        'group' => '\TJGazel\LaravelDocBlockAcl\Models\Group',
-        'permission' => '\TJGazel\LaravelDocBlockAcl\Models\Permission',
+    'model'           => [
+        'user'       => new User(),
+        'group'      => new Group(),
+        'permission' => new Permission(),
     ],
 
-    'table' => [
-        'users' => 'users',
-        'groups' => 'groups',
-        'permissions' => 'permissions',
-        'group_permission' => 'group_permission',
-        'group_user' => 'group_user',
-    ],
-
-    'session_error' => 'acl_error',
+    'session_error'   => 'acl_error',
 
     'session_success' => 'acl_success',
 ];
