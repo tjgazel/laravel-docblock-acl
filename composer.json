@@ -1,5 +1,5 @@
 {
-    "name": "rnads/laravel-docblock-acl",
+    "name": "tjgazel/laravel-docblock-acl",
     "description": "ACL for laravel using docblock",
     "keywords": [
         "docblock",
@@ -8,7 +8,7 @@
         "php",
         "tjgazel"
     ],
-    "homepage": "https://github.com/rnads/laravel-docblock-acl",
+    "homepage": "https://github.com/tjgazel/laravel-docblock-acl",
     "license": "MIT",
     "type": "package",
     "authors": [
@@ -20,6 +20,12 @@
     "require": {
         "php": "^7.3|^8.0"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/rnads/laravel-docblock-acl"
+        }
+    ]
     "require-dev": {
         "illuminate/support": "^8.0",
         "illuminate/http": "^8.0",
